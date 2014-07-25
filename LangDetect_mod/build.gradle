@@ -1,0 +1,15 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+    
+repositories {
+	mavenLocal()
+	mavenCentral()
+     flatDir {
+        dirs 'lib'
+    }
+ }
+  
+dependencies {
+  compile ':jsonic:1.2.0'
+  compile 'junit:junit:+'
+}
