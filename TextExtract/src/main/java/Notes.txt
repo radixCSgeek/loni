@@ -1,0 +1,21 @@
+Parsing:
+
+Use AutoDetectParser for first cut with config.xml that specifies which types to use OITParser for. 
+Future enhancement would be to write a specialized composite parser that uses Context & stats to decide when to use which parser.
+
+File Typing:
+
+Use the DefaultDetector for the first cut
+Future enhancement would be to create a custom detector that compares the results of multiple file typers
+
+Language Detection:
+
+Create LangID interface that returns language + confidence pairs.
+Calculate average confidence for each language
+Use highest confidence language
+
+(possibly averaging won't work ... may need to fall back to relying on which approaches are best for length of text)
+
+
+Detect language on entire document, plus each paragraph / section. Also generate composite language score based on paragraphs. 
+(i.e. we can give a lot more meta data about the languages detected)

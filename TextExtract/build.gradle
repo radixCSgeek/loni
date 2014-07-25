@@ -1,0 +1,16 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+    
+repositories {
+	mavenLocal()
+	mavenCentral()
+     flatDir {
+        dirs 'lib'
+    }
+ }
+  
+dependencies {
+	compile 'org.apache.tika:tika-core:+'
+	compile 'org.apache.tika:tika-parsers:+'
+	compile ':CleanContent:'
+}
