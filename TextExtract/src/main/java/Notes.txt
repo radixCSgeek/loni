@@ -1,12 +1,16 @@
 Parsing:
 
-Use AutoDetectParser for first cut with config.xml that specifies which types to use OITParser for. 
+xxxxx Use AutoDetectParser for first cut with config.xml that specifies which types to use OITParser for. 
+This should work fine because of the use of the application/x.oitdriver.... type specification
+
 Future enhancement would be to write a specialized composite parser that uses Context & stats to decide when to use which parser.
+
+--This might be useful, but might not be needed now. Just use config.xml to overrride the default behavior if we need Tika parsing to handle an OIT type
 
 File Typing:
 
-Use the DefaultDetector for the first cut
-Future enhancement would be to create a custom detector that compares the results of multiple file typers
+Use the DefaultDetector for the first cut <--- This should work fine as long as the x.oitdriver types will be "more precise"
+Future enhancement would be to create a custom detector that compares the results of multiple file typers <--- probably not needed
 
 Language Detection:
 
