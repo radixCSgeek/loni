@@ -12,7 +12,7 @@ import net.bitform.api.secure.SecureRequest;
 
 public class OITDriver implements Serializable{
 	private static final long serialVersionUID = 1L;
-	public static final String prefix = "x."+OITDriver.class.getSimpleName();
+	public static final String prefix = ("x."+OITDriver.class.getSimpleName()).toLowerCase();
 	protected  SecureRequest request;
 
 	public OITDriver() {
@@ -47,7 +47,7 @@ public class OITDriver implements Serializable{
 		for(FileFormat f : base.getChildren())
 		{
 			if(!f.equals(FileFormat.UNKNOWN)) {
-				types.add(OITDetector.getFullSubType(f, ""));
+				types.add(OITDetector.getFullSubType(f, "").toLowerCase());
 				if(f.getChildren() != null) {
 					getTypes(f, types);
 				}

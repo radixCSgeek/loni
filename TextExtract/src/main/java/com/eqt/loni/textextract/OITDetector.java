@@ -1,5 +1,6 @@
 package com.eqt.loni.textextract;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -11,6 +12,8 @@ import net.bitform.api.secure.SecureResponse;
 import org.apache.tika.detect.Detector;
 import org.apache.tika.io.LookaheadInputStream;
 import org.apache.tika.metadata.Metadata;
+import org.apache.tika.metadata.Property;
+import org.apache.tika.metadata.Property.PropertyType;
 import org.apache.tika.mime.MediaType;
 
 public class OITDetector extends OITDriver implements Detector {
@@ -22,13 +25,14 @@ public class OITDetector extends OITDriver implements Detector {
 	public MediaType detect(InputStream input, Metadata metadata)
 			throws IOException {
 	    
+		System.out.println("+++ Calling OITDetector");
 		// Only identification will occur and no output file
         // will be created regardless of other settings
 
         request.setOption(SecureOptions.JustIdentify, true);
         // Set the document to be analyzed
 
-        request.setOption(SecureOptions.SourceDocument, new LookaheadInputStream(input, 1024));
+        request.setOption(SecureOptions.SourceDocument, new File(metadata.get("resourceName")));
         
         try {
             // Execute the request
@@ -41,13 +45,20 @@ public class OITDetector extends OITDriver implements Detector {
             EnumOptionValue status =  response.getResult(SecureOptions.ProcessingStatus);
             if (status == SecureOptions.ProcessingStatusOption.NotIdentified) {
                 // Identification failed
+            	System.out.println("+++ NotIdentified");
                 return MediaType.OCTET_STREAM;
             }
             
             FileFormat sourceFormat = response.getResult(SecureOptions.SourceFormat);
+            if(sourceFormat.equals(FileFormat.UNKNOWN)) {
+            	System.out.println("+++ UNKNOWN");
+               return MediaType.OCTET_STREAM;        	
+            }
+            System.out.println("+++ Returning: "+MediaType.application(getFullSubType(sourceFormat, "")));
             return MediaType.application(getFullSubType(sourceFormat, ""));
             
         } catch (IOException e) {
+        	System.out.println("+++ Error: "+e);
             return MediaType.OCTET_STREAM;
        }
 	}

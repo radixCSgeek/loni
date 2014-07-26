@@ -2148,6 +2148,7 @@ class OITParserHandler extends BaseElementHandler {
 			try {
 				if(arg0.hasArray()) {
 					handler.characters(arg0.array(), arg0.arrayOffset(), arg0.remaining());
+					handler.characters("\n".toCharArray(), 0, 1);
 				} else {
 					char buf[] = new char[1024];
 					while(arg0.hasRemaining()) {
@@ -2155,6 +2156,8 @@ class OITParserHandler extends BaseElementHandler {
 						arg0.get(buf, 0, length);
 						handler.characters(buf, 0, length);
 					}
+					buf[0] = '\n';
+					handler.characters(buf, 0, 1);
 				}
 			} catch(SAXException e) {
 				throw new ElementHandlerException(e);

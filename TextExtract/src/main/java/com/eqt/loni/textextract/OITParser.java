@@ -1,5 +1,6 @@
 package com.eqt.loni.textextract;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashSet;
@@ -36,6 +37,7 @@ public class OITParser extends OITDriver implements Parser {
 			Metadata metadata, ParseContext context) throws IOException,
 			SAXException, TikaException {
 
+		System.out.println("=== Calling OITParser");
         // Only analysis will occur and no output file
         // will be created regardless of other settings
         request.setOption(SecureOptions.JustAnalyze, true);
@@ -46,6 +48,7 @@ public class OITParser extends OITDriver implements Parser {
 
         // Set the document to be analyzed
         request.setOption(SecureOptions.SourceDocument, stream);
+        //new File(metadata.get("resourceName"))
 
 
 
@@ -62,11 +65,13 @@ public class OITParser extends OITDriver implements Parser {
             if (!response.getResult(SecureOptions.WasProcessed)) {
 
                 // Processing failed
+            	System.out.println("=== Failed");
                 throw new TikaException("Document processing failed");
             }
         } catch (IOException e) {
 
             // An exception occured
+        	System.out.println("Problem reading the document: " + e);
             throw new TikaException("Problem reading the document", e);
         }
 	}
