@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintStream;
 
 import org.apache.tika.detect.DefaultDetector;
 import org.apache.tika.detect.Detector;
@@ -27,7 +28,7 @@ public class TextExtract {
 		   Metadata metadata = new Metadata();
 		   metadata.set(Metadata.RESOURCE_NAME_KEY, filename);
 		   File document = new File(filename);
-		   Detector detector = new OITDetector();
+		   Detector detector = new DefaultDetector();
 		MediaType mimetype = detector.detect(
 		        TikaInputStream.get(document), metadata);
 		   System.out.println("File " + filename + " is " + mimetype+"\n\n\n");
@@ -56,6 +57,7 @@ public class TextExtract {
 	          e.printStackTrace();
 	        }
 	        
+	        PrintStream ps = new PrintStream(System.out, true, "UTF-16");
 	        System.out.println("********************************************************\n"+metadata+"\n********************************************************\n");
 	        System.out.println(handler.toString());
 

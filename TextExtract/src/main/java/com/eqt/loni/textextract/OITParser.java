@@ -1,6 +1,7 @@
 package com.eqt.loni.textextract;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashSet;
@@ -47,8 +48,11 @@ public class OITParser extends OITDriver implements Parser {
         request.setOption(SecureOptions.ElementHandler, new OITParserHandler(handler));
 
         // Set the document to be analyzed
-        request.setOption(SecureOptions.SourceDocument, stream);
-        //new File(metadata.get("resourceName"))
+        if(stream instanceof FileInputStream){
+        	request.setOption(SecureOptions.SourceDocument, stream);
+        } else {
+        	request.setOption(SecureOptions.SourceDocument, new File(metadata.get(Metadata.RESOURCE_NAME_KEY)));
+        }
 
 
 

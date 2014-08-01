@@ -13,4 +13,7 @@ dependencies {
 	compile 'org.apache.tika:tika-core:+'
 	compile 'org.apache.tika:tika-parsers:+'
 	compile ':CleanContent:'
+	compile ':LangDetect_mod:'
+	compile ':jsonic:1.2.0'
+	compile 'junit:junit:+'
 }

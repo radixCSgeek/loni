@@ -1,6 +1,7 @@
 package com.eqt.loni.textextract;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -12,8 +13,6 @@ import net.bitform.api.secure.SecureResponse;
 import org.apache.tika.detect.Detector;
 import org.apache.tika.io.LookaheadInputStream;
 import org.apache.tika.metadata.Metadata;
-import org.apache.tika.metadata.Property;
-import org.apache.tika.metadata.Property.PropertyType;
 import org.apache.tika.mime.MediaType;
 
 public class OITDetector extends OITDriver implements Detector {
@@ -30,10 +29,14 @@ public class OITDetector extends OITDriver implements Detector {
         // will be created regardless of other settings
 
         request.setOption(SecureOptions.JustIdentify, true);
-        // Set the document to be analyzed
 
-        request.setOption(SecureOptions.SourceDocument, new File(metadata.get("resourceName")));
-        
+        // Set the document to be analyzed
+        if(input instanceof FileInputStream){
+        	request.setOption(SecureOptions.SourceDocument, new LookaheadInputStream(input, 10*1024*1024));
+        } else {
+        	request.setOption(SecureOptions.SourceDocument, new File(metadata.get(Metadata.RESOURCE_NAME_KEY)));
+        }
+       
         try {
             // Execute the request
             request.execute();
