@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -94,13 +95,18 @@ public class DetectorFactory {
     }
 
     public static void loadProfileFromJarResources(String profileListResourcePath) throws LangDetectException {
-        InputStream listStream = DetectorFactory.class.getResourceAsStream(profileListResourcePath);
-        BufferedReader listReader = new BufferedReader(new InputStreamReader(listStream));
+    	InputStream listStream = DetectorFactory.class.getResourceAsStream(profileListResourcePath);
+        BufferedReader listReader;
+		try {
+			listReader = new BufferedReader(new InputStreamReader(listStream, "ISO-8859-1"));
+		} catch (UnsupportedEncodingException e1) {
+            throw new LangDetectException(ErrorCode.NeedLoadProfileError, "Could not read profile resource list: " + profileListResourcePath + " : UnsupportedEncodingException : "+e1.getLocalizedMessage());
+		}
         LinkedList<String> listFiles = new LinkedList<>();
         try {
 	        String line = listReader.readLine();
 	        while(line != null) {
-	        	listFiles.add(profileListResourcePath+"/"+line);
+	        	listFiles.add(line);
 	        	line = listReader.readLine();
 	        }
 	        listReader.close();
@@ -225,4 +231,8 @@ public class DetectorFactory {
     public static final List<String> getLangList() {
         return Collections.unmodifiableList(instance_.langlist);
     }
+    
+    public static void main(String[] args) throws LangDetectException {
+		DetectorFactory.loadProfileFromJarResources("/small-profiles");
+	}
 }
